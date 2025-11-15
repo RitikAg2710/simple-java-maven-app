@@ -163,8 +163,6 @@ Perfect for learning DevOps, building your portfolio, and interview preparation.
 ## ⭐ Star this repo if you found it helpful!
 
 
-```
-<img width="940" height="477" alt="Image" src="https://github.com/user-attachments/assets/13c330eb-f154-4c26-b833-9e499bd8c20c" />
+<img width="922" height="361" alt="jenkins-aws" src="https://github.com/user-attachments/assets/95218b71-f5f2-496a-8d30-65dc57347407" />
 
 
-```
