@@ -9,7 +9,7 @@ pipeline {
 environment {
     EC2_USER = 'ec2-ssh-key'
     EC2_HOST = '3.123.45.67'          // <-- Replace with your EC2 public IP
-    EC2_KEY = '/var/jenkins_home/.ssh/your-key.pem'
+    EC2_KEY = '/var/jenkins_home/.ssh/mykey.pem'
     APP_NAME = 'simple-java-maven-app'
     REMOTE_DIR = '/home/ec2-user/deploy'
 }
