@@ -1,34 +1,11 @@
-# simple-java-maven-app
 
-Great — I’ll give you a **clean, professional, interview-ready README.md** for your repo **simple-java-maven-app**, in the same style as Vikas’ project but **better, clearer, and more structured**.
-
-I’ll assume your project contains:
-
-✔ Java–Maven app
-✔ Jenkins CI/CD pipeline
-✔ Automatic deployment to EC2
-✔ Screenshots you showed
-
----
-
-# ✅ **README.md (Copy–Paste Ready)**
-
-Below is your complete README — **formatted, structured, and professional**.
-
----
+# ✅ **README.md **
 
 ```markdown
-# 🚀 Automated CI/CD Pipeline for Java Maven Application using Jenkins & AWS EC2
+# 🚀 CI/CD Pipeline for Java Maven Application using Jenkins & AWS EC2
 
-This project demonstrates a complete **CI/CD pipeline** for a Java Maven application, built using **Jenkins Declarative Pipeline**.  
-The pipeline automatically performs:
-
-1. **Code Checkout** from GitHub  
-2. **Build & Packaging** using Maven  
-3. **Artifact Deployment** to AWS EC2  
-4. **Remote Execution** of the Application on EC2
-
-This project is ideal for **DevOps practice**, **interview preparation**, and **real-world Jenkins pipeline experience**.
+This project demonstrates a complete **CI/CD pipeline** for a Java Maven application using Jenkins Declarative Pipeline.  
+It showcases real-world DevOps practices including automated build, test, and deployment to AWS EC2.
 
 ---
 
@@ -36,7 +13,7 @@ This project is ideal for **DevOps practice**, **interview preparation**, and **
 
 ```
 
-Developer → GitHub → Jenkins CI Pipeline → AWS EC2 Deployment → Application Running
+Developer → GitHub → Jenkins → Build (Maven) → Deployment → AWS EC2 → Application Running
 
 ```
 
@@ -44,35 +21,35 @@ Developer → GitHub → Jenkins CI Pipeline → AWS EC2 Deployment → Applicat
 
 ## 🧩 **Tech Stack**
 
-| Component | Technology Used |
-|----------|-----------------|
-| SCM | GitHub |
-| CI Tool | Jenkins (Declarative Pipeline) |
+| Component | Technology |
+|----------|------------|
+| Source Control | GitHub |
+| CI/CD Tool | Jenkins |
 | Build Tool | Maven |
 | Runtime | Java 17 |
-| Deployment Server | AWS EC2 (Ubuntu 24.04) |
-| SSH Access | Jenkins Credentials |
+| Deployment Server | AWS EC2 |
+| Secure Access | SSH key stored in Jenkins Credentials |
 
 ---
 
-## 📌 **Features Implemented**
+## 📌 **Pipeline Features**
 
 ### ✔ Continuous Integration  
-- GitHub → Jenkins Webhook  
-- Jenkins automatically triggers builds  
-- Maven builds the Java app  
-- Unit tests can be enabled/disabled
+- Pull code from GitHub  
+- Build with Maven  
+- Optional unit tests  
+- Clean, repeatable packaging process  
 
 ### ✔ Continuous Deployment  
-- Jenkins securely connects to EC2 using SSH private key  
-- Uploads `my-app-1.0-SNAPSHOT.jar`  
-- Creates deployment directory on EC2  
-- Optionally runs the app with `nohup`
+- Secure SSH-based deployment to EC2  
+- Upload JAR file to remote server  
+- Auto-create deployment directory  
+- Ready for app start automation  
 
-### ✔ Secure Credential Handling  
-- SSH key stored in Jenkins Credentials Manager  
-- No hardcoding of secrets  
-- Uses `sshUserPrivateKey` binding
+### ✔ Security  
+- SSH private key stored in Jenkins Credentials as `ec2-ssh-key`  
+- No secrets written inside repo  
+- No personal IPs, usernames, or key paths exposed  
 
 ---
 
@@ -91,7 +68,7 @@ simple-java-maven-app/
 
 ---
 
-## ⚙️ **Jenkinsfile (CI/CD Pipeline)**
+## ⚙️ **Jenkins Pipeline**
 
 ```groovy
 pipeline {
@@ -103,7 +80,7 @@ pipeline {
 
     environment {
         EC2_USER = 'ubuntu'
-        EC2_HOST = '3.111.37.156'
+        EC2_HOST = '<your-ec2-public-ip>'
         APP_NAME  = 'simple-java-maven-app'
         REMOTE_DIR = '/home/ubuntu/deploy'
     }
@@ -112,7 +89,7 @@ pipeline {
 
         stage('Checkout SCM') {
             steps {
-                git url: 'https://github.com/RitikAg2710/simple-java-maven-app', branch: 'master'
+                git url: 'https://github.com/<your-username>/simple-java-maven-app', branch: 'master'
             }
         }
 
@@ -147,12 +124,12 @@ pipeline {
 
 ---
 
-## 🚀 **Running the Application on EC2**
+## 🚀 **Run Application on EC2**
 
 SSH into EC2:
 
 ```bash
-ssh -i April-lab.pem ubuntu@<EC2-IP>
+ssh -i <your-key.pem> ubuntu@<your-ec2-public-ip>
 ```
 
 Run JAR:
@@ -161,43 +138,39 @@ Run JAR:
 nohup java -jar /home/ubuntu/deploy/my-app-1.0-SNAPSHOT.jar > app.log 2>&1 &
 ```
 
-Check logs:
+View output:
 
 ```bash
 tail -f app.log
 ```
 
-Expected output:
-
-```
-Hello World!
-```
-
 ---
 
-## 📸 **Screenshots**
+## 📸 **Screenshots (Remove Sensitive Info Before Uploading)**
 
-### ✔ Jenkins Pipeline Success
-
-(Add your screenshot here)
-
-### ✔ Application Running on EC2
-
-(Add your screenshot here)
+✔ Jenkins Pipeline Success
+✔ Application Running (only show terminal output, never show AWS account info)
 
 ---
 
 ## 📝 **Conclusion**
 
-This project successfully demonstrates:
+This project demonstrates a real-world CI/CD pipeline using:
 
-* End-to-end CI/CD automation
-* Secure deployment from Jenkins to EC2
-* Real-world DevOps workflow
-* Complete cloud-based Java app deployment
+* Jenkins
+* GitHub
+* Maven
+* AWS EC2
+* Secure Credential Management
 
-This mirrors real production pipelines and is ideal for **portfolio**, **resume**, and **interviews**.
+Perfect for learning DevOps, building your portfolio, and interview preparation.
 
 ---
 
-## ⭐ If you like this project, give it a star on GitHub 😊
+## ⭐ Star this repo if you found it helpful!
+
+```
+
+
+**"Add diagrams"** or **"Add setup guide"**.
+```
