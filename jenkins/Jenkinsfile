@@ -27,19 +27,17 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
-            steps {
-                echo "Deploying $APP_NAME to EC2..."
-
-                // Use Jenkins credentials to securely provide the private key
-                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'EC2_KEY')]) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no -i $EC2_KEY $EC2_USER@$EC2_HOST 'mkdir -p $REMOTE_DIR'
-                        scp -o StrictHostKeyChecking=no -i $EC2_KEY target/*.jar $EC2_USER@$EC2_HOST:$REMOTE_DIR/
-                    """
-                }
-            }
+stage('Deploy to EC2') {
+    steps {
+        echo "Deploying $APP_NAME to EC2..."
+        withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'EC2_KEY')]) {
+            
+            // Escape spaces and avoid Groovy interpolation inside multiline string
+            sh 'ssh -o StrictHostKeyChecking=no -i "$EC2_KEY" $EC2_USER@$EC2_HOST "mkdir -p $REMOTE_DIR"'
+            sh 'scp -o StrictHostKeyChecking=no -i "$EC2_KEY" target/*.jar $EC2_USER@$EC2_HOST:$REMOTE_DIR/'
         }
+    }
+}
     }
 
     post {
