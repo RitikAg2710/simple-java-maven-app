@@ -7,11 +7,12 @@ pipeline {
     }
 
 environment {
-    EC2_USER = 'ubuntu'
-    EC2_HOST = '3.123.45.67'          // <-- Replace with your EC2 public IP
-    EC2_KEY = '/var/jenkins_home/.ssh/April-lab.pem'
+    EC2_USER = 'ubuntu'                  // correct for Ubuntu EC2
+    EC2_HOST = '3.111.37.156'            // your working EC2 public IP
+    EC2_KEY  = '/var/jenkins_home/.ssh/April-lab.pem'
     APP_NAME = 'simple-java-maven-app'
-    REMOTE_DIR = '/home/ec2-user/deploy'
+    REMOTE_DIR = '/home/ubuntu/deploy'
+
 }
 
     stages {
