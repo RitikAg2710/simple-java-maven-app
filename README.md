@@ -164,7 +164,7 @@ Perfect for learning DevOps, building your portfolio, and interview preparation.
 
 
 ```
-
+<img width="940" height="477" alt="Image" src="https://github.com/user-attachments/assets/13c330eb-f154-4c26-b833-9e499bd8c20c" />
 
 
 ```
