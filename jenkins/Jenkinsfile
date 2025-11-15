@@ -6,14 +6,12 @@ pipeline {
         maven 'Mvn'  // Must match the name in Jenkins Global Tool Config
     }
 
-environment {
-    EC2_USER = 'ubuntu'                  // correct for Ubuntu EC2
-    EC2_HOST = '3.111.37.156'            // your working EC2 public IP
-    EC2_KEY  = '/var/jenkins_home/.ssh/April-lab.pem'
-    APP_NAME = 'simple-java-maven-app'
-    REMOTE_DIR = '/home/ubuntu/deploy'
-
-}
+    environment {
+        EC2_USER = 'ubuntu'                  // correct user for your Ubuntu EC2
+        EC2_HOST = '3.111.37.156'            // your EC2 public IP
+        APP_NAME  = 'simple-java-maven-app'
+        REMOTE_DIR = '/home/ubuntu/deploy'
+    }
 
     stages {
 
@@ -32,10 +30,14 @@ environment {
         stage('Deploy to EC2') {
             steps {
                 echo "Deploying $APP_NAME to EC2..."
-                sh """
-                    ssh -o StrictHostKeyChecking=no -i $EC2_KEY $EC2_USER@$EC2_HOST 'mkdir -p $REMOTE_DIR'
-                    scp -o StrictHostKeyChecking=no -i $EC2_KEY target/*.jar $EC2_USER@$EC2_HOST:$REMOTE_DIR/
-                """
+
+                // Use Jenkins credentials to securely provide the private key
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'EC2_KEY')]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no -i $EC2_KEY $EC2_USER@$EC2_HOST 'mkdir -p $REMOTE_DIR'
+                        scp -o StrictHostKeyChecking=no -i $EC2_KEY target/*.jar $EC2_USER@$EC2_HOST:$REMOTE_DIR/
+                    """
+                }
             }
         }
     }
