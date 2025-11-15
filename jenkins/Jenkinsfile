@@ -1,17 +1,25 @@
 pipeline {
     agent any
 
+    // Use Maven installed in Jenkins Global Tool Configuration
+    tools {
+        maven 'Mvn'  // Must match the name in Jenkins Global Tool Config
+    }
+
     environment {
-        EC2_USER = 'ubuntu'                  // EC2 SSH user
-        EC2_HOST = '3.111.37.156'           // Your EC2 public IP
-        SSH_CREDENTIAL = 'ec2-ssh-key'      // Jenkins SSH credential ID
-        APP_DIR = '/home/ubuntu/app'        // Directory on EC2 to deploy
+        // Optional: EC2 details for deployment
+        EC2_USER = 'ec2-user'
+        EC2_HOST = 'your-ec2-public-ip'
+        EC2_KEY = '/var/jenkins_home/.ssh/your-key.pem'
+        APP_NAME = 'simple-java-maven-app'
+        REMOTE_DIR = '/home/ec2-user/deploy'
     }
 
     stages {
-        stage('Checkout Code') {
+
+        stage('Checkout SCM') {
             steps {
-                git branch: 'master', url: 'https://github.com/RitikAg2710/simple-java-maven-app.git'
+                git url: 'https://github.com/RitikAg2710/simple-java-maven-app', branch: 'master'
             }
         }
 
@@ -23,24 +31,21 @@ pipeline {
 
         stage('Deploy to EC2') {
             steps {
-                sshagent([env.SSH_CREDENTIAL]) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'mkdir -p ${APP_DIR}'
-                    scp -o StrictHostKeyChecking=no target/*.jar ${EC2_USER}@${EC2_HOST}:${APP_DIR}/app.jar
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'pkill -f app.jar || true'
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'nohup java -jar ${APP_DIR}/app.jar > ${APP_DIR}/app.log 2>&1 &'
-                    """
-                }
+                echo "Deploying $APP_NAME to EC2..."
+                sh """
+                    ssh -o StrictHostKeyChecking=no -i $EC2_KEY $EC2_USER@$EC2_HOST 'mkdir -p $REMOTE_DIR'
+                    scp -o StrictHostKeyChecking=no -i $EC2_KEY target/*.jar $EC2_USER@$EC2_HOST:$REMOTE_DIR/
+                """
             }
         }
     }
 
     post {
         success {
-            echo '✅ Deployment Successful!'
+            echo "✅ Deployment Successful!"
         }
         failure {
-            echo '❌ Deployment Failed!'
+            echo "❌ Deployment Failed!"
         }
     }
 }
