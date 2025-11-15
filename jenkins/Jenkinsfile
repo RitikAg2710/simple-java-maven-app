@@ -6,14 +6,13 @@ pipeline {
         maven 'Mvn'  // Must match the name in Jenkins Global Tool Config
     }
 
-    environment {
-        // Optional: EC2 details for deployment
-        EC2_USER = 'ec2-user'
-        EC2_HOST = 'your-ec2-public-ip'
-        EC2_KEY = '/var/jenkins_home/.ssh/your-key.pem'
-        APP_NAME = 'simple-java-maven-app'
-        REMOTE_DIR = '/home/ec2-user/deploy'
-    }
+environment {
+    EC2_USER = 'ec2-ssh-key'
+    EC2_HOST = '3.123.45.67'          // <-- Replace with your EC2 public IP
+    EC2_KEY = '/var/jenkins_home/.ssh/your-key.pem'
+    APP_NAME = 'simple-java-maven-app'
+    REMOTE_DIR = '/home/ec2-user/deploy'
+}
 
     stages {
 
