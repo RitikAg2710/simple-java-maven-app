@@ -1,28 +1,46 @@
 pipeline {
     agent any
-    options {
-        skipStagesAfterUnstable()
+
+    environment {
+        EC2_USER = 'ubuntu'                  // EC2 SSH user
+        EC2_HOST = '3.111.37.156'           // Your EC2 public IP
+        SSH_CREDENTIAL = 'ec2-ssh-key'      // Jenkins SSH credential ID
+        APP_DIR = '/home/ubuntu/app'        // Directory on EC2 to deploy
     }
+
     stages {
-        stage('Build') {
+        stage('Checkout Code') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                git branch: 'master', url: 'https://github.com/RitikAg2710/simple-java-maven-app.git'
             }
         }
-        stage('Test') {
+
+        stage('Build') {
             steps {
-                sh 'mvn test'
+                sh 'mvn clean package -DskipTests'
             }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+        }
+
+        stage('Deploy to EC2') {
+            steps {
+                sshagent([env.SSH_CREDENTIAL]) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'mkdir -p ${APP_DIR}'
+                    scp -o StrictHostKeyChecking=no target/*.jar ${EC2_USER}@${EC2_HOST}:${APP_DIR}/app.jar
+                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'pkill -f app.jar || true'
+                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'nohup java -jar ${APP_DIR}/app.jar > ${APP_DIR}/app.log 2>&1 &'
+                    """
                 }
             }
         }
-        stage('Deliver') { 
-            steps {
-                sh './jenkins/scripts/deliver.sh' 
-            }
+    }
+
+    post {
+        success {
+            echo '✅ Deployment Successful!'
+        }
+        failure {
+            echo '❌ Deployment Failed!'
         }
     }
 }
