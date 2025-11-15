@@ -144,14 +144,7 @@ View output:
 tail -f app.log
 ```
 
----
 
-## 📸 **Screenshots (Remove Sensitive Info Before Uploading)**
-
-✔ Jenkins Pipeline Success
-✔ Application Running (only show terminal output, never show AWS account info)
-
----
 
 ## 📝 **Conclusion**
 
@@ -171,8 +164,7 @@ Perfect for learning DevOps, building your portfolio, and interview preparation.
 
 
 ```
-<img width="940" height="477" alt="image" src="https://github.com/user-attachments/assets/5b6faea3-fc45-42e4-80e6-cac52dad2647" />
 
-<img width="940" height="465" alt="image" src="https://github.com/user-attachments/assets/9d167c44-d8dd-473f-b7d0-27e60a00d1de" />
+
 
 ```
